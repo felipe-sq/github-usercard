@@ -7,10 +7,15 @@ import axios from 'axios'
 
 
 const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
-.then((data) => {
-  console.log(data);
+.then(response => {
+    console.log(response)
+  })
+.catch(err => {
+  console.log(err)
 })
-.catch(err => console.log(err))
+
+const entryPoint = document.querySelector('div.cards')
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -36,7 +41,13 @@ const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [ 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+followersArray.forEach(e => {
+  const followerCard = axios.get(`https://api.github.com/users/${e}`)
+  const newFollowerCard = gitCardMaker(followerCard)
+  entryPoint.appendChild(gitCardMaker(newFollowerCard)); 
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -67,7 +78,6 @@ const followersArray = [];
     bigknell
 */
 
-const entryPoint = document.querySelector('div.cards')
 
 function gitCardMaker(data){
   const gitCard = document.createElement('div');
@@ -83,16 +93,16 @@ function gitCardMaker(data){
   const gitBio = document.createElement('p');
 
   gitCard.classList.add('card')
-  gitImg.setAttribute('src', data.avatar_url)
+  gitImg.src = data.avatar_url
   gitCardInfo.classList.add('card-info')
   gitName.classList.add('name')
   gitUserName.classList.add('username')
   gitLocation.textContent = 'Location: ', data.location
   gitProfile.textContent = 'Profile: ', data.url
   gitProfileURL.href = data.url
-  gitFollowers.textContent = `Followers: ${data.followers}`
-  gitFollowing.textContent = `Following: ${data.following}`
-  gitBio.textContent = `Bio: ${data.bio}`
+  gitFollowers.textContent = 'Followers: ', data.followers
+  gitFollowing.textContent = 'Following: ', data.following
+  gitBio.textContent = 'Bio: ', data.bio
 
   gitCard.appendChild(gitImg);
   gitCard.appendChild(gitCardInfo)
