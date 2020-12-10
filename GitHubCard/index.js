@@ -3,7 +3,10 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from 'axios'
 
+
+const gitUserMain = axios.get('https://api.github.com/users/felipe-sq')
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -11,7 +14,7 @@
 
     Skip to STEP 3.
 */
-
+console.log(gitUserMain);
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
@@ -58,3 +61,46 @@ const followersArray = [];
     luishrd
     bigknell
 */
+function gitCardMaker(data){
+  const gitCard = document.createElement('div');
+  const gitImg = document.createElement('img');
+  const gitCardInfo = document.createElement('div');
+  const gitName = document.createElement('h3');
+  const gitUserName = document.createElement('p');
+  const gitLocation = document.createElement('p');
+  const gitProfile = document.createElement('p');
+  const gitProfileURL = document.createElement('a');
+  const gitFollowers = document.createElement('p');
+  const gitFollowing = document.createElement('p');
+  const gitBio = document.createElement('p');
+
+  gitCard.classList.add('card')
+  gitImg.src = data.avatar_url
+  gitCardInfo.classList.add('card-info')
+  gitName.classList.add('name')
+  gitUserName.classList.add('username')
+  gitLocation.textContent = 'Location: ', data.location
+  gitProfile.textContent = 'Profile: ', data.url
+  gitProfileURL.href = data.url
+  gitFollowers.textContent = `Followers: ${data.followers}`
+  gitFollowing.textContent = `Following: ${data.following}`
+  gitBio.textContent = `Bio: ${data.bio}`
+
+  gitCard.appendChild(gitImg);
+  gitCard.appendChild(gitCardInfo)
+  gitCardInfo.appendChild(gitName)
+  gitCardInfo.appendChild(gitUserName)
+  gitCardInfo.appendChild(gitLocation)
+  gitCardInfo.appendChild(gitProfile)
+  gitProfile.appendChild(gitProfileURL)
+  gitCardInfo.appendChild(gitFollowers)
+  gitCardInfo.appendChild(gitFollowing)
+  gitCardInfo.appendChild(gitBio)
+
+
+  // console.log(gitCard);
+
+  return gitCard
+}
+
+console.log(gitCardMaker(gitUserMain));
