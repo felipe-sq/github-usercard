@@ -6,7 +6,11 @@
 import axios from 'axios'
 
 
-const gitUserMain = axios.get('https://api.github.com/users/felipe-sq')
+const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
+.then((data) => {
+  console.log(data);
+})
+.catch(err => console.log(err))
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -14,7 +18,8 @@ const gitUserMain = axios.get('https://api.github.com/users/felipe-sq')
 
     Skip to STEP 3.
 */
-console.log(gitUserMain);
+// console log code to test axios request above (it was assigned to a variable in order to test the console.log)
+// console.log(gitUserMain);
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
@@ -61,6 +66,9 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+const entryPoint = document.querySelector('div.cards')
+
 function gitCardMaker(data){
   const gitCard = document.createElement('div');
   const gitImg = document.createElement('img');
@@ -75,7 +83,7 @@ function gitCardMaker(data){
   const gitBio = document.createElement('p');
 
   gitCard.classList.add('card')
-  gitImg.src = data.avatar_url
+  gitImg.setAttribute('src', data.avatar_url)
   gitCardInfo.classList.add('card-info')
   gitName.classList.add('name')
   gitUserName.classList.add('username')
@@ -103,4 +111,5 @@ function gitCardMaker(data){
   return gitCard
 }
 
-console.log(gitCardMaker(gitUserMain));
+entryPoint.appendChild(gitCardMaker(gitCardAPI));
+// entryPoint.appendChild(gitCardMaker(axios.get('https://api.github.com/users/felipe-sq')))
