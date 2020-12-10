@@ -4,15 +4,17 @@
     https://api.github.com/users/<your name>
 */
 import axios from 'axios'
-
+axios.get('https://api.github.com/users/felipe-sq')
 
 const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
 .then(response => {
-    console.log(response)
-  })
+  console.log(response)
+    })
 .catch(err => {
   console.log(err)
 })
+
+console.log(gitCardAPI)
 
 const entryPoint = document.querySelector('div.cards')
 
@@ -29,6 +31,8 @@ const entryPoint = document.querySelector('div.cards')
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
+entryPoint.appendChild(gitCardMaker(gitCardAPI));
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -80,6 +84,7 @@ followersArray.forEach(e => {
 
 
 function gitCardMaker(data){
+
   const gitCard = document.createElement('div');
   const gitImg = document.createElement('img');
   const gitCardInfo = document.createElement('div');
@@ -121,5 +126,4 @@ function gitCardMaker(data){
   return gitCard
 }
 
-entryPoint.appendChild(gitCardMaker(gitCardAPI));
 // entryPoint.appendChild(gitCardMaker(axios.get('https://api.github.com/users/felipe-sq')))
