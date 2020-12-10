@@ -6,17 +6,30 @@
 import axios from 'axios'
 axios.get('https://api.github.com/users/felipe-sq')
 
+const entryPoint = document.querySelector('div.cards')
+
 const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
-.then(response => {
-  console.log(response)
+.then(({data}) => {
+  const urlForGit = data.url
+  const avatar_url = data.avatar_url
+  const gitName = data.name
+  const profile = data.url
+  const location = data.location
+  const followers = data.followers
+  const following = data.following
+  const bio = data.bio
+  const newGitCard = gitCardMaker({urlForGit, avatar_url, gitName, location, profile, followers, following, bio})
+
+  entryPoint.appendChild(newGitCard);
+
+  console.log(data)
     })
 .catch(err => {
-  console.log(err)
+  console.log('Error: ', err)
 })
 
 console.log(gitCardAPI)
 
-const entryPoint = document.querySelector('div.cards')
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -101,13 +114,15 @@ function gitCardMaker(data){
   gitImg.src = data.avatar_url
   gitCardInfo.classList.add('card-info')
   gitName.classList.add('name')
+  gitName.textContent = `${data.name}`
   gitUserName.classList.add('username')
-  gitLocation.textContent = 'Location: ', data.location
-  gitProfile.textContent = 'Profile: ', data.url
+  gitUserName.textContent = `${data.login}`
+  gitLocation.textContent = `Location: ${data.location}`
+  gitProfile.textContent = `Profile: ${data.url}`
   gitProfileURL.href = data.url
-  gitFollowers.textContent = 'Followers: ', data.followers
-  gitFollowing.textContent = 'Following: ', data.following
-  gitBio.textContent = 'Bio: ', data.bio
+  gitFollowers.textContent = `Followers: ${data.followers}`
+  gitFollowing.textContent = `Following: ${data.following}`
+  gitBio.textContent = `Bio: ${data.bio}`
 
   gitCard.appendChild(gitImg);
   gitCard.appendChild(gitCardInfo)
