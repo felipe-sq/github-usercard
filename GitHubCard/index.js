@@ -8,18 +8,22 @@ axios.get('https://api.github.com/users/felipe-sq')
 
 const entryPoint = document.querySelector('div.cards')
 
-const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
+const gitCardData = {}
+const myGit = 'felipe-sq'
+const gitCardAPI = axios.get(`https://api.github.com/users/${myGit}`)
 .then(({data}) => {
-  const urlForGit = data.url
-  const avatar_url = data.avatar_url
-  const gitName = data.name
-  const userName = data.login
-  const profile = data.html_url
-  const location = data.location
-  const followers = data.followers
-  const following = data.following
-  const bio = data.bio
-  const newGitCard = gitCardMaker({urlForGit, avatar_url, gitName, userName, location, profile, followers, following, bio})
+
+  gitCardData.url = data.url
+  gitCardData.avatar_url = data.avatar_url
+  gitCardData.gitName = data.name
+  gitCardData.userName = data.login
+  gitCardData.profile = data.html_url
+  gitCardData.location = data.location
+  gitCardData.followers = data.followers
+  gitCardData.following = data.following
+  gitCardData.bio = data.bio
+
+  const newGitCard = gitCardMaker(gitCardData)
 
   entryPoint.appendChild(newGitCard);
 
@@ -46,7 +50,7 @@ console.log(gitCardAPI)
     and append the returned markup to the DOM as a child of .cards
 */
 
-entryPoint.appendChild(gitCardMaker(gitCardAPI));
+entryPoint.appendChild(gitCardMaker(gitCardData));
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
