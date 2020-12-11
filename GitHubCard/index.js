@@ -13,12 +13,13 @@ const gitCardAPI = axios.get('https://api.github.com/users/felipe-sq')
   const urlForGit = data.url
   const avatar_url = data.avatar_url
   const gitName = data.name
-  const profile = data.url
+  const userName = data.login
+  const profile = data.html_url
   const location = data.location
   const followers = data.followers
   const following = data.following
   const bio = data.bio
-  const newGitCard = gitCardMaker({urlForGit, avatar_url, gitName, location, profile, followers, following, bio})
+  const newGitCard = gitCardMaker({urlForGit, avatar_url, gitName, userName, location, profile, followers, following, bio})
 
   entryPoint.appendChild(newGitCard);
 
@@ -118,8 +119,8 @@ function gitCardMaker(data){
   gitUserName.classList.add('username')
   gitUserName.textContent = `${data.login}`
   gitLocation.textContent = `Location: ${data.location}`
-  gitProfile.textContent = `Profile: ${data.url}`
-  gitProfileURL.href = data.url
+  gitProfile.textContent = `Profile: ${data.html_url}`
+  gitProfileURL.href = data.html_url
   gitFollowers.textContent = `Followers: ${data.followers}`
   gitFollowing.textContent = `Following: ${data.following}`
   gitBio.textContent = `Bio: ${data.bio}`
@@ -136,7 +137,7 @@ function gitCardMaker(data){
   gitCardInfo.appendChild(gitBio)
 
 
-  // console.log(gitCard);
+  console.log(gitCard);
 
   return gitCard
 }
