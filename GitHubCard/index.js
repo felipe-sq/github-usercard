@@ -4,36 +4,26 @@
     https://api.github.com/users/<your name>
 */
 import axios from 'axios'
-axios.get('https://api.github.com/users/felipe-sq')
 
 const entryPoint = document.querySelector('div.cards')
 
-const gitCardData = {}
 const myGit = 'felipe-sq'
 const gitCardAPI = axios.get(`https://api.github.com/users/${myGit}`)
 .then(({data}) => {
-
-  gitCardData.url = data.url
-  gitCardData.avatar_url = data.avatar_url
-  gitCardData.gitName = data.name
-  gitCardData.userName = data.login
-  gitCardData.profile = data.html_url
-  gitCardData.location = data.location
-  gitCardData.followers = data.followers
-  gitCardData.following = data.following
-  gitCardData.bio = data.bio
+  let gitCardData = data
 
   const newGitCard = gitCardMaker(gitCardData)
 
   entryPoint.appendChild(newGitCard);
 
-  console.log(data)
+  // console.log(gitCardData.gitName);
+  // console.log(data)
     })
 .catch(err => {
   console.log('Error: ', err)
 })
 
-console.log(gitCardAPI)
+// console.log(gitCardAPI)
 
 
 /*
@@ -49,8 +39,10 @@ console.log(gitCardAPI)
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+// Code for adding my own git card before continuing on to debug and add the rest
+// of the cards for followersArray
 
-entryPoint.appendChild(gitCardMaker(gitCardData));
+// entryPoint.appendChild(gitCardMaker(gitCardAPI));
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -66,9 +58,21 @@ entryPoint.appendChild(gitCardMaker(gitCardData));
 const followersArray = [ 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
 
 followersArray.forEach(e => {
-  const followerCard = axios.get(`https://api.github.com/users/${e}`)
-  const newFollowerCard = gitCardMaker(followerCard)
-  entryPoint.appendChild(gitCardMaker(newFollowerCard)); 
+  // let followerGit = e
+
+axios.get(`https://api.github.com/users/${e}`)
+  .then(({data}) => {
+    let followerGitCardData = data
+  
+    const newFollowerGitCard = gitCardMaker(followerGitCardData)
+  
+    entryPoint.appendChild(newFollowerGitCard);
+
+      })
+  .catch(err => {
+    console.log('Error: ', err)
+  })
+
 })
 
 /*
@@ -123,8 +127,9 @@ function gitCardMaker(data){
   gitUserName.classList.add('username')
   gitUserName.textContent = `${data.login}`
   gitLocation.textContent = `Location: ${data.location}`
-  gitProfile.textContent = `Profile: ${data.html_url}`
-  gitProfileURL.href = data.html_url
+  gitProfile.textContent = `Profile: ${gitProfileURL}`
+  gitProfileURL.href = data.url
+  gitProfileURL.textContent = `${data.html_url}`
   gitFollowers.textContent = `Followers: ${data.followers}`
   gitFollowing.textContent = `Following: ${data.following}`
   gitBio.textContent = `Bio: ${data.bio}`
@@ -141,9 +146,7 @@ function gitCardMaker(data){
   gitCardInfo.appendChild(gitBio)
 
 
-  console.log(gitCard);
+  // console.log(gitCard);
 
   return gitCard
 }
-
-// entryPoint.appendChild(gitCardMaker(axios.get('https://api.github.com/users/felipe-sq')))
