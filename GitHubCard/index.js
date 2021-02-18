@@ -3,6 +3,33 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from 'axios'
+
+const entryPoint = document.querySelector('div.cards')
+
+// The following code was written to test/verify the info being returned by axios for
+// step 2.
+const gitNameForTest = axios.get(`https://api.github.com/users/felipe-sq`)
+.then(data => {
+  console.log(data)
+})
+
+const myGit = 'felipe-sq';
+
+const gitCardAPI = axios.get(`https://api.github.com/users/${myGit}`)
+.then(({data}) => {
+  let gitCardData = data
+
+  const newGitCard = gitCardMaker(gitCardData)
+
+  entryPoint.appendChild(newGitCard);
+
+  // console.log(gitCardData.gitName);
+  // console.log(data)
+    })
+.catch(err => {
+  console.log('Error: ', err)
+})
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -12,10 +39,18 @@
     Skip to STEP 3.
 */
 
+// console log code to test axios request above
+// console.log(gitNameForTest);
+
 /*
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
+
+// Code for adding my own git card before continuing on to debug and add the rest
+// of the cards for followersArray. No longer needed.
+
+// entryPoint.appendChild(gitCardMaker(gitCardAPI));
 
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
@@ -28,7 +63,24 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [ 'tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+followersArray.forEach(e => {
+
+axios.get(`https://api.github.com/users/${e}`)
+  .then(({data}) => {
+    let followerGitCardData = data
+  
+    const newFollowerGitCard = gitCardMaker(followerGitCardData)
+  
+    entryPoint.appendChild(newFollowerGitCard);
+
+      })
+  .catch(err => {
+    console.log('Error: ', err)
+  })
+
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -58,3 +110,49 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+function gitCardMaker(data){
+
+  const gitCard = document.createElement('div');
+  const gitImg = document.createElement('img');
+  const gitCardInfo = document.createElement('div');
+  const gitName = document.createElement('h3');
+  const gitUserName = document.createElement('p');
+  const gitLocation = document.createElement('p');
+  const gitProfile = document.createElement('p');
+  const gitProfileURL = document.createElement('a');
+  const gitFollowers = document.createElement('p');
+  const gitFollowing = document.createElement('p');
+  const gitBio = document.createElement('p');
+
+  gitCard.classList.add('card')
+  gitImg.src = data.avatar_url
+  gitCardInfo.classList.add('card-info')
+  gitName.classList.add('name')
+  gitName.textContent = `${data.name}`
+  gitUserName.classList.add('username')
+  gitUserName.textContent = `${data.login}`
+  gitLocation.textContent = `Location: ${data.location}`
+  gitProfile.textContent = `Profile: ${gitProfileURL}`
+  gitProfileURL.href = data.url
+  gitProfileURL.textContent = `${data.html_url}`
+  gitFollowers.textContent = `Followers: ${data.followers}`
+  gitFollowing.textContent = `Following: ${data.following}`
+  gitBio.textContent = `Bio: ${data.bio}`
+
+  gitCard.appendChild(gitImg);
+  gitCard.appendChild(gitCardInfo)
+  gitCardInfo.appendChild(gitName)
+  gitCardInfo.appendChild(gitUserName)
+  gitCardInfo.appendChild(gitLocation)
+  gitCardInfo.appendChild(gitProfile)
+  gitProfile.appendChild(gitProfileURL)
+  gitCardInfo.appendChild(gitFollowers)
+  gitCardInfo.appendChild(gitFollowing)
+  gitCardInfo.appendChild(gitBio)
+
+
+  // console.log(gitCard);
+
+  return gitCard
+}
